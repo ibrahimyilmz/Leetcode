@@ -4,107 +4,83 @@ struct Node {
 };
 
 class MyLinkedList {
-    Node* head;
+private:
+    Node* dummy;
 public:
     MyLinkedList() {
-        head = nullptr;
+        dummy = new Node();
+        dummy->next = nullptr;
     }
     
     int get(int index) {
-        Node* curr = head;
-        for (int i = 0 ; i < index && curr != nullptr ; i++) {
-            curr = curr->next;
-        }
-        if (!curr) {
-            return -1;
-        }
-        else {
-            return curr->data;
-        }
-    }
-    
-    void addAtHead(int val) {
-        if (!head) {
-            head = new Node();
-            head->data = val;
-            head->next = nullptr;
-        }
-        else {
-            Node* newHead = new Node();
-            newHead->data = val;
-            newHead->next = head;
-            head = newHead;
-        }
-    }
-    
-    void addAtTail(int val) {
-        if (head == nullptr) {
-            head = new Node();
-            head->next = nullptr;
-            head->data = val;
-            return;
-        }
+        if (index < 0) return -1;
 
-        Node* tail = head;
+        Node* curr = dummy;
 
-        while (tail->next != nullptr) {
-            tail = tail->next;
-        }
-        Node* newNode = new Node();
-        newNode->data = val;
-        newNode->next = nullptr;
-        tail->next = newNode;
-    }
-    
-    void addAtIndex(int index, int val) {
-        if (index < 0) return;
-
-        if (index == 0) {
-            Node* newHead = new Node();
-            newHead->data = val;
-            newHead->next = head;
-            head = newHead;
-            return;
-        }
-
-        Node* curr = head;
-        for (int i = 0 ; i < index - 1 && curr != nullptr ; i++) {
+        for (int i = 0 ; i < index + 1 && curr != nullptr ; i++) {
             curr = curr->next;
         }
 
         if (curr == nullptr) {
+            return -1;
+        }
+        return curr->data;
+    }
+    
+    void addAtHead(int val) {
+        Node* nodeToAdd = new Node();
+        nodeToAdd->data = val;
+        nodeToAdd->next = dummy->next;
+        dummy->next = nodeToAdd;   
+    }
+    
+    void addAtTail(int val) {
+        Node* curr = dummy;
+        while (curr->next != nullptr) {
+            curr = curr->next;
+        }
+
+        Node* nodeToAdd = new Node();
+        nodeToAdd->data = val;
+        nodeToAdd->next = nullptr;
+        curr->next = nodeToAdd;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if (index < 0) {
             return;
         }
 
-        Node* newNode = new Node();
-        newNode->data = val;
-        newNode->next = curr->next;
-        curr->next = newNode;
+        Node* current = dummy;
+        for (int i = 0 ; i < index && current != nullptr ; i++) {
+            current = current->next;
+        }
+
+        if (current == nullptr) {
+            return;
+        }
+
+        Node* nodeToAdd = new Node();
+        nodeToAdd->data = val;
+        nodeToAdd->next = current->next;
+        current->next = nodeToAdd;
     }
     
     void deleteAtIndex(int index) {
         if (index < 0) return;
 
-        if (!head) return;
+        Node* current = dummy;
 
-        if (index == 0) {
-            Node* temp = head->next;
-            delete head;
-            head = temp;
+        for (int i = 0; i < index && current->next != nullptr ; i++) {
+            current = current->next;
+        }
+
+        if (current->next == nullptr) {
             return;
         }
 
-        Node* tail = head;
-        for (int i = 0 ; i < index - 1 && tail->next != nullptr ; i++) {
-            tail = tail->next;
-        }
-
-        if (!tail->next) {
-            return;
-        }
-
-        Node* nodeToDelete = tail->next;
-        tail->next = tail->next->next;
+        Node* nodeToDelete = current->next;
+        current->next = current->next->next;
         delete nodeToDelete;
     }
 };
