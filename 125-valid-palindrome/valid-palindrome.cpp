@@ -1,23 +1,20 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        s.erase(std::remove_if(s.begin(), s.end(), [](char c) {
-            return !std::isalnum(c); // Remove if not alphanumeric
-        }), s.end());
-        std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
-            return std::tolower(c);
-        });
+        int l = 0;
+        int r = s.size() - 1;
 
-        int left = 0;
-        int right = s.size() - 1;
-
-        while (left < right) {
-            char chLeft = s[left];
-            char chRight = s[right];
+        while (l < r) {
+            while (l < r && !isalnum(s[l])) {
+                l++;
+            }
+            while (l < r && !isalnum(s[r])) {
+                r--;
+            }
             
-            if (chLeft != chRight) return false;
-            left++;
-            right--;
+            if (tolower(s[l]) != tolower(s[r])) return false;
+            l++;
+            r--;
         }
         return true;
     }
