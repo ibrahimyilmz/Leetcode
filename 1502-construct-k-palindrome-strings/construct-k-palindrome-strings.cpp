@@ -10,10 +10,8 @@ public:
         }
 
         int odd = 0;
-        int even = 0;
         for (auto element : hash) {
-            if (element.second % 2  == 0) even++;
-            else if (element.second % 2 == 1) odd++;
+            if (element.second % 2 == 1) odd++;
         }
 
         if (odd > k) return false;
