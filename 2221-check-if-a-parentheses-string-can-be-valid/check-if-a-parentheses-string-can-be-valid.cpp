@@ -2,40 +2,31 @@ class Solution {
 public:
     bool canBeValid(string s, string locked) {
         int length = s.size();
-        // If length of string is odd, return false.
-        if (length % 2 == 1) {
-            return false;
-        }
+        if (length % 2 == 1) return false;
 
-        stack<int> openBrackets, unlocked;
+        stack<int> flex, lock;
 
-        // Iterate through the string to handle '(' and ')'
-        for (int i = 0; i < length; i++) {
-            if (locked[i] == '0') {
-                unlocked.push(i);
-            } else if (s[i] == '(') {
-                openBrackets.push(i);
-            } else if (s[i] == ')') {
-                if (!openBrackets.empty()) {
-                    openBrackets.pop();
-                } else if (!unlocked.empty()) {
-                    unlocked.pop();
-                } else {
-                    return false;
-                }
+        for (int i = 0 ; i < s.size() ; i++) {
+            if (locked[i] == '0') flex.push(i);
+            else if (s[i] == '(') lock.push(i);
+            else {
+                if (!lock.empty()) lock.pop();
+                else if (!flex.empty()) flex.pop();
+                else return false;
             }
         }
 
-        // Match remaining open brackets with unlocked characters
-        while (!openBrackets.empty() && !unlocked.empty() &&
-               openBrackets.top() < unlocked.top()) {
-            openBrackets.pop();
-            unlocked.pop();
+        while (!flex.empty() && !lock.empty()) {
+            if (flex.top() > lock.top()) {
+                flex.pop();
+                lock.pop();
+            }
+            else {
+                return false;
+            }
         }
 
-        if (!openBrackets.empty()) {
-            return false;
-        }
+        if (!lock.empty()) return false;
 
         return true;
     }
