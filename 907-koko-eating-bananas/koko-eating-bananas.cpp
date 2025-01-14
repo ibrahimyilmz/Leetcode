@@ -3,30 +3,25 @@ public:
     int eat(vector<int>& piles, int k) {
         int hour = 0;
         for (int i : piles) {
-            hour += i / k;
-            hour += i % k != 0 ? 1 : 0; 
+            hour += ceil(static_cast<double>(i) / k);
         }
         return hour;
     }
 
     int minEatingSpeed(vector<int>& piles, int h) {
         int n = piles.size();
-        int max = -1;
-        for (int i = 0 ; i < n ; i++) {
-            max = std::max(max, piles[i]);
-        }
+        int max = *max_element(piles.begin(), piles.end());
 
         int low = 1;
         int high = max;
-        int mid;
         while (low < high) {
-            mid = low + (high - low) / 2;
-
-            if (eat(piles, mid) <= h) {
+            int mid = low + (high - low) / 2;
+            int time = eat(piles, mid);
+            if (time <= h) {
                 high = mid;
             }
 
-            if (eat(piles, mid) > h) {
+            if (time > h) {
                 low = mid + 1;
             }
         }
