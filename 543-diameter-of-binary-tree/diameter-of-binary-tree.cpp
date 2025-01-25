@@ -11,32 +11,18 @@
  */
 class Solution {
 public:
-    int maxDepth(TreeNode* root) {
+    int help(TreeNode* root, int& res) {
         if (!root) return 0;
 
-        int l = maxDepth(root->left);
-        int r = maxDepth(root->right);
+        int l = help(root->left, res);
+        int r = help(root->right, res);
 
+        res = max(l + r, res);
         return max(l, r) + 1;
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        if (!root) return 0;
-
-        stack<TreeNode*> st;
-        st.push(root);
         int res = 0;
-        while (!st.empty()) {
-            TreeNode* temp = st.top();
-            st.pop();
-
-            int l = maxDepth(temp->left);
-            int r = maxDepth(temp->right);
-
-            res = max(res, l + r);
-
-            if (temp->left) st.push(temp->left);
-            if (temp->right) st.push(temp->right);
-        }
+        help(root, res);
         return res;
     }
 };
