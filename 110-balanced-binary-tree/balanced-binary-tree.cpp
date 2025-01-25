@@ -17,18 +17,13 @@ public:
         int l = help(root->left);
         int r = help(root->right);
 
+        if (l == -1 || r == -1 || abs(l - r) > 1) {
+            return -1;
+        }
+
         return max(l, r) + 1;
     }
     bool isBalanced(TreeNode* root) {
-        if (!root) return true;
-
-        bool l = isBalanced(root->left);
-        bool r = isBalanced(root->right);
-
-        int val = abs(help(root->left) - help(root->right));
-        if (val <= 1 && l && r) {
-            return true;
-        }
-        return false;
+        return help(root) != -1;
     }
 };
