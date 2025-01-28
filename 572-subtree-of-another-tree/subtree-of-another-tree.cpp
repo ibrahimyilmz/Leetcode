@@ -26,23 +26,15 @@ public:
         if (!root && !subRoot) return true;
         if (!root && subRoot) return false;
 
-        int val = subRoot->val;
-
-        queue<TreeNode*> q;
-        q.push(root);
-        while (!q.empty()) {
-            TreeNode* temp = q.front();
-            q.pop();
-
-            if (temp->val == val) {
-                bool same = helper(subRoot, temp);
-
-                if (same) return true;
-            }
-
-            if (temp->left) q.push(temp->left);
-            if (temp->right) q.push(temp->right);
+        if (root->val == subRoot->val) {
+            bool same = helper(subRoot, root);
+            
+            if (same) return true;
         }
-        return false;
+
+        bool l = isSubtree(root->left, subRoot);
+        bool r = isSubtree(root->right, subRoot);
+
+        return l || r;
     }
 };
