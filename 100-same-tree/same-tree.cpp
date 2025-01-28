@@ -10,22 +10,36 @@
  * };
  */
 class Solution {
-private:
-    bool helper(TreeNode* p, TreeNode* q) {
-        if (!p && !q) return true;
-        if (!(p && q)) return false;
-        if (p->val != q->val) return false;
-
-        bool l = helper(p->left, q->left);
-        bool r = helper(p->right, q->right);
-
-        return l && r;
-    }
 public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
         if (!p && !q) return true;
         if (!(p && q)) return false;
 
-        return helper(p, q);
+        stack<pair<TreeNode*, TreeNode*>> stk;
+        stk.push({p, q});
+
+        while (!stk.empty()) {
+            auto nodePair = stk.top();
+            stk.pop();
+
+            TreeNode* nodeP = nodePair.first;
+            TreeNode* nodeQ = nodePair.second;
+
+            if (nodeP->val != nodeQ->val) return false;
+
+            if (nodeP->left && nodeQ->left) {
+                stk.push({nodeP->left, nodeQ->left});
+            } else if (nodeP->left || nodeQ->left) {
+                return false;
+            }
+
+            if (nodeP->right && nodeQ->right) {
+                stk.push({nodeP->right, nodeQ->right});
+            } else if (nodeP->right || nodeQ->right) {
+                return false;
+            }
+        }
+
+        return true;
     }
 };
