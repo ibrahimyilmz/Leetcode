@@ -16,11 +16,9 @@ private:
 
         max = std::max(root->val, max);
 
-        int l = help(root->left, max);
-        int r = help(root->right, max);
+        int total = help(root->left, max) + help(root->right, max);
 
-        if (root->val >= max) return l + r + 1;
-        return l + r;
+        return (root->val >= max) + total;
     }
 public:
     int goodNodes(TreeNode* root) {
