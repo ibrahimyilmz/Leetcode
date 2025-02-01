@@ -10,24 +10,28 @@
  * };
  */
 class Solution {
-private:
-    void dfs(TreeNode* root, vector<int> &vec) {
-        if (!root) return;
-
-        dfs(root->left, vec);
-        vec[0]--;
-        if (vec[0] == 0) {
-            vec[1] = root->val;
-            return;
-        }
-        dfs(root->right, vec);
-    }
 public:
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> vec(2);
-        vec[0] = k;
+        if (!root) return -1;
 
-        dfs(root, vec);
-        return vec[1];
+        stack<TreeNode*> st;
+        TreeNode* curr = root;
+
+        while (!st.empty() || curr) {
+            while (curr) {
+                st.push(curr);
+                curr = curr->left;
+            }
+
+            curr = st.top();
+            st.pop();
+
+            k--;
+            if (k == 0) {
+                return curr->val;
+            }
+            curr = curr->right;
+        }
+        return -1;
     }
 };
