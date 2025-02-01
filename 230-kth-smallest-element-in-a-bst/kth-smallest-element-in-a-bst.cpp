@@ -15,14 +15,19 @@ private:
         if (!root) return;
 
         dfs(root->left, vec);
-        vec.push_back(root->val);
+        vec[0]--;
+        if (vec[0] == 0) {
+            vec[1] = root->val;
+            return;
+        }
         dfs(root->right, vec);
     }
 public:
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> vec;
+        vector<int> vec(2);
+        vec[0] = k;
 
         dfs(root, vec);
-        return vec[k - 1];
+        return vec[1];
     }
 };
