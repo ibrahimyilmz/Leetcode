@@ -10,28 +10,26 @@
  * };
  */
 class Solution {
+private:
+    int help(TreeNode* root, int& k) {
+        if (!root) {
+            k++;
+            return -1;
+        }
+
+        int l = help(root->left, k);
+        k--;
+        if (k == 0) return root->val;
+        k--;
+        if (k == 0) return root->val;
+        int r = help(root->right, k);
+
+        if (l != -1) return l;
+        if (r != -1) return r;
+        return -1;
+    }
 public:
     int kthSmallest(TreeNode* root, int k) {
-        if (!root) return -1;
-
-        stack<TreeNode*> st;
-        TreeNode* curr = root;
-
-        while (!st.empty() || curr) {
-            while (curr) {
-                st.push(curr);
-                curr = curr->left;
-            }
-
-            curr = st.top();
-            st.pop();
-
-            k--;
-            if (k == 0) {
-                return curr->val;
-            }
-            curr = curr->right;
-        }
-        return -1;
+        return help(root, k);
     }
 };
