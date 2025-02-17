@@ -10,19 +10,19 @@
  * };
  */
 class Solution {
+private:
+    TreeNode* helper(vector<int>& nums, int l, int r) {
+        if (l > r) return nullptr;
+
+        int mid = l + (r - l) / 2;
+        TreeNode* root = new TreeNode(nums[mid]);
+
+        root->left = helper(nums, l, mid - 1);
+        root->right = helper(nums, mid + 1, r);
+        return root;
+    }
 public:
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        if (nums.size() == 0) return nullptr;
-        if (nums.size() ==  1) return new TreeNode(nums[0]);
-
-        int middle = nums.size() / 2;
-        TreeNode* root = new TreeNode(nums[middle]);
-
-        vector<int> l(nums.begin(), nums.begin() + middle);
-        vector<int> r(nums.begin() + middle + 1, nums.end());
-
-        root->left = sortedArrayToBST(l);
-        root->right = sortedArrayToBST(r);
-        return root;
+        return helper(nums, 0 , nums.size() - 1);
     }
 };
