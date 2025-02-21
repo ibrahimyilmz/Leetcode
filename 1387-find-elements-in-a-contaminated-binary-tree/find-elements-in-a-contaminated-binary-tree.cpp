@@ -12,25 +12,17 @@
 class FindElements {
 private:
     TreeNode* root;
+    unordered_map<int, int> hash;
     void FindElementsHelper(TreeNode* root, int val) {
         if (!root) {
             return;
         }
 
         root->val = val;
+        hash[val] = val;
 
         FindElementsHelper(root->left, val * 2 + 1);
         FindElementsHelper(root->right, val * 2 + 2);
-    }
-    bool findHelper(TreeNode* root, int target) {
-        if (!root) return false;
-
-        if (root->val == target) return true;
-
-        bool l = findHelper(root->left, target);
-        bool r = findHelper(root->right, target);
-
-        return l | r;
     }
 public:
     FindElements(TreeNode* root) {
@@ -40,7 +32,10 @@ public:
     }
     
     bool find(int target) {
-        return findHelper(root, target);
+        if (hash.find(target) != hash.end()) {
+            return true;
+        }
+        return false;
     }
 };
 
